@@ -1,5 +1,7 @@
 # 🖥️ Pandas Color Printer & CamoufoxDf
 
+## `pip install pandascamoufox`
+
 This project provides:
 
 - **`CamoufoxDf` wrapper**: Extract DOM elements from a [Camoufox](https://github.com/daijro/camoufox) browser session into a Pandas DataFrame, including both element attributes and bound methods for direct interaction (e.g., click, hover, type).
