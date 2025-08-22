@@ -347,7 +347,7 @@ class CamoufoxDf:
         After calling this, the instance should no longer be used
         to interact with the page or DOM elements.
         """
-        self.browser.__exit__()
+        self.browser.__exit__(None,None,None)
 
     def get_df(self, str query_selector="*"):
         """
