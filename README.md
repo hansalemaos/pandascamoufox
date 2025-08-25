@@ -1,6 +1,8 @@
-# 🖥️ Pandas Color Printer & CamoufoxDf
+# 🖥️ CamoufoxDf - Webscraping with Camoufox, Pandas and Cython
 
 ## `pip install pandascamoufox`
+
+#### Important: Cython and a C++ compiler must be installed! The module will be compiled the first time you import it!
 
 This project provides:
 
@@ -24,7 +26,7 @@ This project provides:
 
 - ✅ **Recommended Environment**
   To use this effectively, run it inside:
-  - [VTM Terminal](https://github.com/directvt/vtm) — for advanced terminal rendering
+  - [VTM Terminal](https://github.com/directvt/vtm) — for advanced terminal rendering (no line breaks)
   - [ptpython](https://github.com/prompt-toolkit/ptpython) — for an enhanced interactive REPL
 
 ---
@@ -34,15 +36,23 @@ This project provides:
 ```py
 from pandascamoufox import CamoufoxDf
 from camoufox.utils import DefaultAddons
+import pandas as pd
+from contextlib import suppress as contextlib_suppress
+from time import sleep
 
 cfox = CamoufoxDf(
-    humanize=False,
-    headless=False,
-        **{"exclude_addons": [DefaultAddons.UBO]}
+    humanize=False, headless=False, **{"exclude_addons": [DefaultAddons.UBO]}
 )
 
+def gf(selector="*"):
+    while True:
+        with contextlib_suppress(Exception):
+            df = cfox.get_df(selector)
+            if "aa_text" in df.columns:
+                return df
+
 cfox.page.goto("https://bet365.com")
-df = cfox.get_df("*")
+df=gf()
 print(df)
 ```
 

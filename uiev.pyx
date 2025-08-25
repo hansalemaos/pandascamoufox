@@ -269,8 +269,9 @@ cdef class ExecuteMethod:
     """
     cdef:
         object element
-        object method
-    def __init__(self, element, method):
+        str method
+
+    def __init__(self, element, str method):
         self.element = element
         self.method = method
 
@@ -347,7 +348,7 @@ class CamoufoxDf:
         After calling this, the instance should no longer be used
         to interact with the page or DOM elements.
         """
-        self.browser.__exit__(None,None,None)
+        self.browser.__exit__(None, None, None)
 
     def get_df(self, str query_selector="*"):
         """
@@ -377,12 +378,12 @@ class CamoufoxDf:
                     "aa_element": el,
                     **el.evaluate("""
         el => {
-            // alle Attribute sammeln
-            const aaattributes = {};
+            const atti = {};
             for (const attr of el.attributes) {
-                aaattributes[attr.name] = attr.value;
+                atti[attr.name] = attr.value;
             }
             const recti = el.getBoundingClientRect();
+            const winstyle = window.getComputedStyle(el);
             return {
                 aa_tag: el.tagName,
                 aa_id: el.id || null,
@@ -404,16 +405,16 @@ class CamoufoxDf:
                 aa_offsetLeft: el.offsetLeft,
                 aa_offsetWidth: el.offsetWidth,
                 aa_offsetHeight: el.offsetHeight,
-                aa_display: window.getComputedStyle(el).display,
-                aa_visibility: window.getComputedStyle(el).visibility,
-                aa_opacity: window.getComputedStyle(el).opacity,
-                aa_color: window.getComputedStyle(el).color,
-                aa_background: window.getComputedStyle(el).backgroundColor,
+                aa_display: winstyle.display,
+                aa_visibility: winstyle.visibility,
+                aa_opacity: parseFloat(winstyle.opacity),
+                aa_color: winstyle.color,
+                aa_background: winstyle.backgroundColor,
                 aa_parentTag: el.parentElement ? el.parentElement.tagName : null,
                 aa_childrenCount: el.children.length,
                 aa_siblingBefore: el.previousElementSibling ? el.previousElementSibling.tagName : null,
                 aa_siblingAfter: el.nextElementSibling ? el.nextElementSibling.tagName : null,
-                aa_attributes: aaattributes
+                aa_attributes: atti
             };
         }
         """),
